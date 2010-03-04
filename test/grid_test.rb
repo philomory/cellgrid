@@ -15,16 +15,26 @@ class GridTest < Test::Unit::TestCase
     assert_raises(ArgumentError) { @cg::Grid.new(0,0,0) }    
   end
 
-  def test_width_and_height_are_readable
+  def test_dimensions_are_readable
     grid = @cg::Grid.new(1,2)
     assert_equal 1, grid.width
     assert_equal 2, grid.height
   end
   
-  def test_coordinates_are_not_writable
+  def test_dimensions_are_not_writable
     grid = @cg::Grid.new(1,2)
     assert_raises(NoMethodError) { grid.width  = 0 }
     assert_raises(NoMethodError) { grid.height = 0 }
+  end
+
+  def test_grid_access_via_brackets_returns_cells
+    grid = @cg::Grid.new(2,2)
+    assert_instance_of @cg::Cell, grid[0,0]
+  end
+
+  def test_grid_access_restricted_to_dimensions
+    grid = @cg::Grid.new(2,2)
+    assert_raises(OutOfBoundsError) { grid[4,4] }
   end
 
 end
