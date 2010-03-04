@@ -1,6 +1,6 @@
 require 'test/unit'
 require 'mocha'
-require 'lib/cellgrid'
+require 'cellgrid'
 
 class CellTest < Test::Unit::TestCase
   
