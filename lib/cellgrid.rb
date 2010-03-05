@@ -1,4 +1,5 @@
 require 'cellgrid/errors'
+require 'cellgrid/membergrid'
 
 class CellGrid
   # CellGrid works like struct, generating new classes. In this case,
@@ -70,8 +71,15 @@ class CellGrid
       end
       
       attrs.each do |attribute|
-        define_method(attribute) do |x,y|
-          self[x,y][attribute]
+        define_method(attribute) do |*args|
+          if args.empty?
+            return ::CellGrid::MemberGrid.new(self,attribute)
+          elsif args.size == 2
+            x, y = *args
+            self[x,y][attribute]
+          else
+            raise ArgumentError
+          end
         end
       end
       
