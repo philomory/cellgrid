@@ -3,8 +3,13 @@ require 'cellgrid'
 
 class DirectionsTest < Test::Unit::TestCase
   def setup
-    @cg = CellGrid.new(:foo,:bar)
-    @grid = @cg::Grid.new(5,5)
+    cell_klass = Class.new(CellGrid::Cell) do
+      has_one :foo, :bar
+    end
+    grid_klass = Class.new(CellGrid::Grid) do
+      composed_of cell_klass
+    end
+    @grid = grid_klass.new(5,5)
   end
   
   def test_cells_respond_to_cardinal_compass_directions
