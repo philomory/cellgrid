@@ -14,7 +14,5 @@ class CellGrid
     mod.const_set(:Grid,GridClass.new(mod,args))
     return mod
   end
-  
-  protected
-  
+    
 end
