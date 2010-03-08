@@ -10,7 +10,7 @@
 # I was advised to save sugar for later. This can be safely removed
 # during code clean up if this sugar is decided against.
 
-class CellGrid
+module CellGrid
   class MemberGrid
     attr_reader :grid, :member
     def initialize(grid,member)

@@ -1,4 +1,4 @@
-class CellGrid
+module CellGrid
   
   # Grids are 2D arrays with defined width and height, holding Cell elements. 
   # They can be iterated over in useful ways (this has not been implimented 

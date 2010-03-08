@@ -1,4 +1,4 @@
-class CellGrid
+module CellGrid
   
   class Cell
     attr_reader :x, :y, :grid
