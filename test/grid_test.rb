@@ -21,6 +21,13 @@ class GridTest < Test::Unit::TestCase
     assert_nothing_raised        { @klass.new(0,0)   }
     assert_raises(ArgumentError) { @klass.new(0,0,0) }    
   end
+  
+  def test_new_grid_with_block
+    g = @klass.new(2,3) do |cell|
+      cell.foo = cell.x + cell.y
+    end
+    assert_equal 2, g[1,1].foo
+  end
 
   def test_dimensions_are_readable
     assert_equal 1, @grid.width

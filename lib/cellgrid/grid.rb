@@ -14,10 +14,13 @@ module CellGrid
     end
     
     attr_reader :width, :height
-    def initialize(width,height)
+    def initialize(width,height,&blk)
       @width, @height = width, height
       cc = self.class.cell_class
       @grid_data = Array.new(@width) {|x| Array.new(@height) {|y| cc.new(x,y,self)}}
+      if blk
+        self.each(&blk)
+      end
     end
     
     def [](x,y)
