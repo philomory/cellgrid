@@ -32,5 +32,20 @@ module CellGrid
       @grid_data.flatten
     end
     
+    def around(x,y,radius)
+      positions = []
+      (x-radius..x+radius).each do |x_pos|
+        if x_pos.between?(0,@width)
+          remaining = radius - (x - x_pos).abs
+          (y-remaining..y+remaining).each do |y_pos|
+            if y_pos.between?(0,@height)
+              positions << self[x_pos,y_pos]
+            end
+          end
+        end
+      end
+      return positions
+    end
+    
   end
 end

@@ -69,5 +69,9 @@ module CellGrid
     alias_method :right, :east
     alias_method :left,  :west
 
+    def around(radius)
+      @grid.around(x,y,radius)
+    end
+
   end
 end
