@@ -55,4 +55,13 @@ class EnumTest < Test::Unit::TestCase
     @grid.each {|cell| cell.hello }
   end
   
+  def test_pick_single
+    @grid.each do |cell|
+      cell.foo = cell.x + cell.y
+    end
+    picked = @grid.pick {|cell| cell.foo.even? }
+    assert_kind_of CellGrid::Cell, picked
+    assert picked.foo.even?
+  end
+  
 end

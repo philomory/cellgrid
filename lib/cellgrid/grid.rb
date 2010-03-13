@@ -58,5 +58,11 @@ module CellGrid
       return positions
     end
     
+    def pick(&blk)
+      set = self.cells.select(&blk)
+      ordered = set.sort_by {rand}
+      picked = ordered.first
+    end
+    
   end
 end
