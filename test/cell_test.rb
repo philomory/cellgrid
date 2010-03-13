@@ -60,5 +60,11 @@ class CellTest < Test::Unit::TestCase
     assert_equal true, cell.zing?
   end
   
+  def test_splat
+    cell = @klass.new(1,2,@grid)
+    x,y = *cell
+    assert_equal 1, x
+    assert_equal 2, y
+  end
     
 end

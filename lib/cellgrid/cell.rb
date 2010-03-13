@@ -72,6 +72,11 @@ module CellGrid
     def around(radius)
       @grid.around(x,y,radius)
     end
+    
+    def to_a
+      [@x,@y]
+    end
+
 
   end
 end

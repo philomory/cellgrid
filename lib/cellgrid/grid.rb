@@ -43,10 +43,10 @@ module CellGrid
     def around(x,y,radius)
       positions = []
       (x-radius..x+radius).each do |x_pos|
-        if x_pos.between?(0,@width)
+        if x_pos.between?(0,@width-1)
           remaining = radius - (x - x_pos).abs
           (y-remaining..y+remaining).each do |y_pos|
-            if y_pos.between?(0,@height)
+            if y_pos.between?(0,@height-1)
               positions << self[x_pos,y_pos]
             end
           end
