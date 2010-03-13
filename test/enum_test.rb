@@ -46,4 +46,13 @@ class EnumTest < Test::Unit::TestCase
     assert_equal expected, Set.new(around)
   end
   
+  def test_each
+    (0...@grid.width).each do |x|
+      (0...@grid.height).each do |y|
+        @grid[x,y].expects(:hello)
+      end
+    end
+    @grid.each {|cell| cell.hello }
+  end
+  
 end

@@ -32,6 +32,14 @@ module CellGrid
       @grid_data.flatten
     end
     
+    def each
+      @width.times do |x|
+        @height.times do |y|
+          yield self[x,y]
+        end
+      end
+    end
+    
     def around(x,y,radius)
       positions = []
       (x-radius..x+radius).each do |x_pos|
