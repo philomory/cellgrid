@@ -1,0 +1,79 @@
+Some cell contents can move, others can't.
+
+Contents all need to conform to an interface.
+
+Some methods are going to be called by internal communications, i.e. methods a cell calls on some content object. Others are going to be called by the user and constitute game logic. These may be overlapping or disjoint sets, or one set may even be a superset of the other.
+
+Some methods that a player might want to call from game logic include:
+
+Content#move(direction)
+Content#move_to(cell or x,y)
+Content#can_move?(direction)
+Content#can_move_to?(cell or x,y)
+
+Sometimes objects can be pushed out of the way, sometimes they can't. In this case, some objects are pushers, some objects pushable, other objects not pushable. In most games, a pushable object can only be pushed if the space behind it is *empty*, but some games allow chain pushing, where whole lines of pushable objects can be pushed as long as at the end of the line there is an empty space. This is game logic, but it's unclear where this belongs. Two patterns seem to be available. One is a check then do API, the other a do, report failure API. A report failure API could report failure either using exceptions, or using return values. A check then do API would use return values on the check, and raise an exception if the do is attempted when it shouldn't work. An overarching API might use a combination. One API might be:
+
+(in this code, do_real_move is the code that alters all the object attributes to reflect the change. Maybe look into transactional techniques?)
+player.move(:north), calls into cell or grid, says, I want to move to cell x.
+Map or cell says to cell x, someone wants to enter this cell. Perhaps, cell.accept_incoming?(player) or simply cell.accept_incoming?(slot). If the slot is unoccupied, the cell can simply return true.... drawing out code paths instead:
+
+For unoccupied target cell:
+
+player.move(:north)
+	cell.move(player,:north)
+		cell.north.accept_incoming?(:north)	
+			returns true
+		cell.do_real_move(player,self.north) 
+			changes positions
+			returns true
+		returns true
+	returns true
+returns true
+
+For an occupied target cell with an immovable occupant
+
+player.move(:north)
+	cell.move(player,:north)
+		cell.north.accept_incoming?(:north)
+			occupant.allow_push?(:north)
+				returns false
+			returns false
+		returns false
+	returns false
+returns false
+
+For an occupied target cell with movable occupant, and room in the next space:
+
+player.move(:north)
+	cell1.move(player,:north)
+		cell1.north.accept_incoming?(:north)
+			occupant.allow_push?(:nort)
+				occupant.move(occupant,:north)
+					cell2.north.accept_incoming?(occupant)
+						returns true
+					cell2.do_real_move(occupant,self.north)
+						changes positions of occupant
+						returns true
+					returns true
+				returns true
+			returns true
+		cell1.do_real_move(player,self.north)
+			changes position of the player
+			returns true
+		returns true
+	returns true
+returns true
+
+The call chain above implies that we'll chain pushes indefinitely. If we want
+to only allow pushing singly, we'd use this call chain instead:
+
+player.move(:north)
+	cell1.move(player,:north)
+		cell1.north.accept_incoming?(player,:north)
+			occupant.move_for?(player,:north)
+				occupant.cell.north.empty?(:occupant)
+					returns true
+				returns true
+			returns true
+		cell1.do_real_move(player,cell1.north)
+			cell1.north.incoming(player,:north)

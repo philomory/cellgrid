@@ -7,6 +7,7 @@ class CellTest < Test::Unit::TestCase
   def setup
     @klass = Class.new(CellGrid::Cell) do
       has_one :foo, :bar
+      has_many :baz, :zot
     end
     @grid = stub_everything('grid')
   end
@@ -32,12 +33,21 @@ class CellTest < Test::Unit::TestCase
     assert_raises(NoMethodError) { cell.grid = nil }
   end
   
-  def test_cells_get_accessors_based_on_args
+  def test_has_ones_are_readable_and_writable
     cell = @klass.new(0,0,@grid)
-    assert_respond_to cell, :foo
-    assert_respond_to cell, :foo=
-    assert_respond_to cell, :bar
-    assert_respond_to cell, :bar=
+    assert_nothing_raised { cell.foo = 1 }
+    assert_equal 1, cell.foo
   end
   
+  def test_has_manys_are_readable_and_arrays
+    cell = @klass.new(0,0,@grid)
+    assert_equal [], cell.baz
+  end
+  
+  def test_has_manys_are_not_writable
+    cell = @klass.new(0,0,@grid)
+    assert_raises(NoMethodError) { cell.baz = 1 }
+  end
+  
+    
 end

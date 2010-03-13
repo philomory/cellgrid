@@ -11,19 +11,22 @@ module CellGrid
       end
     end
 
-    #  def self.has_many(*attrs)
-    #    @has_manys ||= []
-    #    attrs.each do |attribute|
-    #      attr_reader attribute
-    #      @has_manys << attribute
-    #    end
-    #  end
+    def self.has_many(*attrs)
+      @has_manys ||= []
+      attrs.each do |attribute|
+        attr_reader attribute
+        @has_manys << attribute
+      end
+    end
 
-    def self.has_ones; @has_ones; end
-    #  def self.has_manys; @has_manys; end
+    def self.has_ones; @has_ones || []; end
+    def self.has_manys; @has_manys || []; end
 
     def initialize(x,y,grid)
       @x, @y, @grid = x, y, grid
+      self.class.has_manys.each do |attribute|
+        instance_variable_set("@#{attribute}",[])
+      end
     end
 
     def north
