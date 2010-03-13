@@ -8,6 +8,7 @@ class CellTest < Test::Unit::TestCase
     @klass = Class.new(CellGrid::Cell) do
       has_one :foo, :bar
       has_many :baz, :zot
+      has_flag :zing
     end
     @grid = stub_everything('grid')
   end
@@ -47,6 +48,16 @@ class CellTest < Test::Unit::TestCase
   def test_has_manys_are_not_writable
     cell = @klass.new(0,0,@grid)
     assert_raises(NoMethodError) { cell.baz = 1 }
+  end
+  
+  def test_has_flag_can_set_unset_assign_or_test
+    cell = @klass.new(0,0,@grid)
+    assert_nothing_raised { cell.unset_zing    }
+    assert !cell.zing?
+    assert_nothing_raised { cell.set_zing      }
+    assert cell.zing?
+    assert_nothing_raised { cell.zing = "bork" }
+    assert_equal true, cell.zing?
   end
   
     

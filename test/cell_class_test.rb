@@ -17,4 +17,11 @@ class CellClassTest < Test::Unit::TestCase
     assert_equal [:foo, :bar, :baz], klass.has_manys
   end
   
+  def test_cell_class_has_flag
+    klass = Class.new(CellGrid::Cell) do
+      has_flag :foo, :bar, :baz
+    end
+    assert_equal [:foo, :bar, :baz], klass.flags
+  end
+  
 end

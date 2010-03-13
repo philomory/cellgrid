@@ -18,9 +18,31 @@ module CellGrid
         @has_manys << attribute
       end
     end
+    
+    def self.has_flag(*flags)
+      @flags ||= []
+      flags.each do |flag|
+        class_eval %{
+          def #{flag}?
+            @#{flag}
+          end
+          def set_#{flag}
+            @#{flag} = true
+          end
+          def unset_#{flag}
+            @#{flag} = false
+          end
+          def #{flag}=(val)
+            @#{flag} = !!val
+          end
+        }
+        @flags << flag
+      end
+    end
 
     def self.has_ones; @has_ones || []; end
     def self.has_manys; @has_manys || []; end
+    def self.flags; @flags || []; end
 
     def initialize(x,y,grid)
       @x, @y, @grid = x, y, grid
