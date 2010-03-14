@@ -54,6 +54,13 @@ class EnumTest < Test::Unit::TestCase
     end
     @grid.each {|cell| cell.hello }
   end
+
+  def test_each_sub
+    @grid.each {|cell| cell.expects(:foo) }
+    @grid.each_sub(4,4) do |sub|
+      sub.each {|cell| cell.foo }
+    end
+  end
   
   def test_pick_single
     @grid.each do |cell|
@@ -64,4 +71,5 @@ class EnumTest < Test::Unit::TestCase
     assert picked.foo.even?
   end
   
+
 end

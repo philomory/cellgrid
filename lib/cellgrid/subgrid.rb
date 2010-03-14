@@ -2,9 +2,10 @@ module CellGrid
   class SubGrid
     attr_reader :start_x, :start_y, :width, :height, :grid
     def initialize(start_x,start_y,width,height,grid)
-      @start_x, @start_y = start_x, start_y
-      @width, @height = width, height
       @grid = grid
+      @start_x, @start_y = start_x, start_y
+      @width =  [width, @grid.width  - start_x].min
+      @height = [height,@grid.height - start_y].min
     end
     
     def [](x,y)

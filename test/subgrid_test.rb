@@ -23,6 +23,12 @@ class SubGridTest < Test::Unit::TestCase
     assert_nothing_raised { CellGrid::SubGrid.new(1,2,3,4,@grid)  }
   end
   
+  def test_subgrid_shrinks_to_fit_in_grid
+    sg = CellGrid::SubGrid.new(8,7,4,4,@grid)
+    assert_equal 2, sg.width
+    assert_equal 3, sg.height
+  end
+  
   def test_all_parameters_are_readable
     sg = CellGrid::SubGrid.new(1,2,3,4,@grid)
     assert_equal 1, sg.start_x
@@ -60,5 +66,7 @@ class SubGridTest < Test::Unit::TestCase
     end
     sg.each {|cell| cell.foo }
   end
+  
+  
   
 end

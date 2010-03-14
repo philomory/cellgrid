@@ -43,6 +43,16 @@ module CellGrid
       end
     end
     
+    def each_sub(sub_width,sub_height)
+      ((width/sub_width.to_f).ceil).times do |sub_x_num|
+        ((height/sub_height.to_f).ceil).times do |sub_y_num|
+          start_x = sub_x_num * sub_width
+          start_y = sub_y_num * sub_height
+          yield SubGrid.new(start_x,start_y,sub_width,sub_height,self)
+        end
+      end
+    end
+    
     def around(x,y,radius)
       positions = []
       (x-radius..x+radius).each do |x_pos|
