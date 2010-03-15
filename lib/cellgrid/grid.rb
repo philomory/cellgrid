@@ -44,12 +44,16 @@ module CellGrid
     end
     
     def each_sub(sub_width,sub_height)
-      ((width/sub_width.to_f).ceil).times do |sub_x_num|
-        ((height/sub_height.to_f).ceil).times do |sub_y_num|
-          start_x = sub_x_num * sub_width
-          start_y = sub_y_num * sub_height
-          yield SubGrid.new(start_x,start_y,sub_width,sub_height,self)
+      if block_given?
+        ((width/sub_width.to_f).ceil).times do |sub_x_num|
+          ((height/sub_height.to_f).ceil).times do |sub_y_num|
+            start_x = sub_x_num * sub_width
+            start_y = sub_y_num * sub_height
+            yield SubGrid.new(start_x,start_y,sub_width,sub_height,self)
+          end
         end
+      else
+        return Enumerator.new(self,:each_sub,sub_width,sub_height)
       end
     end
     

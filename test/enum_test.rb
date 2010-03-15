@@ -62,6 +62,16 @@ class EnumTest < Test::Unit::TestCase
     end
   end
   
+  def test_each_sub_without_block
+    enum = @grid.each_sub(4,4)
+    assert_instance_of Enumerator, enum
+    
+    @grid.each {|cell| cell.expects(:foo) }
+    enum.each do |sub|
+      sub.each {|cell| cell.foo }
+    end
+  end
+  
   def test_pick_single
     @grid.each do |cell|
       cell.foo = cell.x + cell.y
