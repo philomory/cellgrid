@@ -40,8 +40,8 @@ module CellGrid
     
     def each
       if block_given?
-        @width.times do |x|
-          @height.times do |y|
+        width.times do |x|
+          height.times do |y|
             yield self[x,y]
           end
         end

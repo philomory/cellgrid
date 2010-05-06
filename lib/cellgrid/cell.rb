@@ -52,16 +52,16 @@ module CellGrid
     end
 
     def north
-      return @grid[@x,@y-1]
+      return @grid[x,y-1]
     end
     def south
-      return @grid[@x,@y+1]
+      return @grid[x,y+1]
     end
     def east
-      return @grid[@x+1,@y]
+      return @grid[x+1,y]
     end
     def west
-      return @grid[@x-1,@y]
+      return @grid[x-1,y]
     end
 
     alias_method :up,    :north
@@ -74,7 +74,7 @@ module CellGrid
     end
     
     def to_a
-      [@x,@y]
+      [x,y]
     end
 
 
